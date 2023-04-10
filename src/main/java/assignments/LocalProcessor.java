@@ -39,18 +39,28 @@ public class LocalProcessor {
 
     @ListIteratorAnnotation
     public void listIterator(List<String> stringList) {
-        stringArrayList = new LinkedList<>(stringList);
-        for (int i = 0; i < period; i++) {
-            System.out.println(stringArrayList.get(i).hashCode());
+        if (stringList == null) {
+            return;
         }
+
+        stringArrayList = new LinkedList<>(stringList);
+
+        for (String s : stringArrayList) {
+            System.out.println(s.hashCode());
+        }
+
     }
 
     @FullNameProcessorGeneratorAnnotation
     public String fullNameProcessorGenerator(List<String> stringList) {
+        if (stringList == null) {
+            return "";
+        }
+
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < stringArrayList.size(); i++) {
-            sb.append(stringList.get(i))
+        for (String s : stringArrayList) {
+            sb.append(s)
                     .append(" ");
         }
 
@@ -61,13 +71,17 @@ public class LocalProcessor {
 
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) throws FileNotFoundException {
+        if (!file.exists()) {
+            return;
+        }
+
         informationScanner = new Scanner(file);
 
         StringBuilder sb = new StringBuilder();
 
-            while (informationScanner.hasNext()) {
-                sb.append(informationScanner.nextLine());
-            }
+        while (informationScanner.hasNext()) {
+            sb.append(informationScanner.nextLine());
+        }
 
         informationScanner.close();
         processorVersion = sb.toString();
